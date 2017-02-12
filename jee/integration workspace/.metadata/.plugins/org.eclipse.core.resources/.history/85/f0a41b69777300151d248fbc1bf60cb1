@@ -1,0 +1,395 @@
+package ttma.client.GUI;
+
+import java.awt.geom.Area;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.TitledBorder;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import org.jdesktop.beansbinding.ObjectProperty;
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+
+
+
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+import org.jdesktop.beansbinding.BeanProperty;
+
+import ttma.Entities.Evenement;
+import ttma.client.delegate.EventDelegate;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import javax.swing.JLabel;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Font;
+import java.awt.Image;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import javax.swing.ImageIcon;
+
+public class EventManage extends JPanel {
+	List<Evenement> evenements;
+	private JTable table;
+	private JTextField nm;
+	private JTextField pl;
+	private JTextField dt;
+	private JTextField pn;
+	private JTextField price;
+
+	/**
+	 * Create the panel.
+	 */
+	public EventManage() {
+		evenements = new ArrayList<Evenement>();
+		evenements= EventDelegate.findAll();
+		table = new JTable();
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Manage Event", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(table);
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setFont(new Font("Times New Roman", Font.BOLD, 11));
+		
+		JLabel lblPlace = new JLabel("place");
+		lblPlace.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblDate = new JLabel("date");
+		lblDate.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblParticipantsNumber = new JLabel("participant's number");
+		lblParticipantsNumber.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		nm = new JTextField();
+		nm.setColumns(10);
+		
+		pl = new JTextField();
+		pl.setColumns(10);
+		
+		dt = new JTextField();
+		dt.setColumns(10);
+		
+		pn = new JTextField();
+		pn.setColumns(10);
+		
+		JLabel lblProgram = new JLabel("program");
+		lblProgram.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JTextArea pr = new JTextArea();
+		
+		JButton btnDelete = new JButton("delete");
+		btnDelete.setIcon(new ImageIcon("D:\\javaEETools\\workspacee\\ClientTTMA\\delete.png"));
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Evenement evenement=new Evenement();
+				evenement =evenements.get(table.getSelectedRow());
+				if (EventDelegate.deleteEvenement(evenement)){
+				 
+				evenements= EventDelegate.findAll();
+				nm.setText("");
+				pl.setText("");
+				dt.setText("");
+				price.setText("");
+				pn.setText("");
+				price.setText("");
+				pr.setText("");
+				JOptionPane.showMessageDialog(null, "Deleted");
+				
+				initDataBindings();
+				}	
+			}
+			
+			
+		});
+		
+		JButton btnUpdate = new JButton("update");
+		btnUpdate.setIcon(new ImageIcon("D:\\javaEETools\\workspacee\\ClientTTMA\\upd.png"));
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Evenement evenement=new Evenement();
+				evenement =evenements.get(table.getSelectedRow());
+				evenement.setName_event(nm.getText());
+				evenement.setPlace_event(pl.getText());
+				//evenement.setDate_event(new Date());
+				evenement.setProgram(pr.getText());
+				evenement.setPrice(Float.parseFloat(price.getText()));
+				
+				if(EventDelegate.updateEvenement(evenement)){
+					JOptionPane.showMessageDialog(null, "Done");
+					nm.setText("");
+					pl.setText("");
+					//dt.setText("");
+					price.setText("");
+					pn.setText("");
+					price.setText("");
+					pr.setText("");
+					evenements= EventDelegate.findAll();
+					initDataBindings();
+				}
+			}
+		});
+		
+		price = new JTextField();
+		price.setColumns(10);
+		
+		JLabel lblPrice = new JLabel("price");
+		lblPrice.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel image = new JLabel("");
+		
+		JLabel lblPhoto = new JLabel("Photo");
+		lblPhoto.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JButton btnPdf = new JButton("Pdf");
+		btnPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String browse= nm.getText();
+				String browse1= pl.getText();
+				String browse2= price.getText();
+				String browse3= pn.getText();
+			//	String browse4= pr.getText();
+			        Document doc = new Document();
+			         try {
+			                PdfWriter writer=PdfWriter.getInstance(doc,new FileOutputStream(browse+".pdf"));
+			            } catch (FileNotFoundException ex) {
+			              // Logger.getLogger(ListStopover.class.getName()).log(Level.SEVERE, null, ex);
+			            } catch (DocumentException ex) {
+			          //  Logger.getLogger(ListStopover.class.getName()).log(Level.SEVERE, null, ex);
+			        }
+			        
+			        
+			        // String text = @"The result can be seen below, which shows that ";
+			        String i=(String) table.getValueAt(table.getSelectedRow(),0).toString();
+	                String j=(String) table.getValueAt(table.getSelectedRow(),1).toString();
+		            String d=(String) table.getValueAt(table.getSelectedRow(),2).toString();			        String f=(String) table.getValueAt(table.getSelectedRow(),3).toString();			        String h=(String) table.getValueAt(table.getSelectedRow(),4).toString();
+     		        String g=(String) table.getValueAt(table.getSelectedRow(),3).toString();
+			        try{
+			            doc.open();
+			           
+		            doc.add(new Paragraph("Name :\t"+ table.getValueAt(table.getSelectedRow(),0).toString()));
+		            doc.add(new Paragraph("Place :\t"+ table.getValueAt(table.getSelectedRow(),1).toString()));
+		            doc.add(new Paragraph("Price :\t"+ table.getValueAt(table.getSelectedRow(),2).toString()));
+		            doc.add(new Paragraph("participant's number:\t"+ table.getValueAt(table.getSelectedRow(),3).toString()));
+//			            doc.add(new Paragraph("Program :\t"+ table.getValueAt(table.getSelectedRow(),4).toString()));
+		            doc.close();
+			            JOptionPane.showMessageDialog(null, "bien exporté");
+			        }
+			        
+			        catch(Exception e1){
+			            
+			        	JOptionPane.showMessageDialog(null, "Done");
+			            
+		        }
+//					
+//					
+					
+				
+			}
+			
+		});
+		
+		
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Evenement evenement=new Evenement();
+				evenement =evenements.get(table.getSelectedRow());
+				//////
+				ImageIcon format=null;
+			     format=new ImageIcon(evenement.getImage());
+			    Image img = format.getImage();
+			    Image newimg = img.getScaledInstance(352, 216,  java.awt.Image.SCALE_SMOOTH);
+			    ImageIcon newIcon=null;
+			    newIcon = new ImageIcon(newimg);
+			     image.setIcon(newIcon);
+				///////
+				nm.setText(evenement.getName_event());
+				pl.setText(evenement.getPlace_event());
+				//dt.getText(evenement.getDate_event(());
+				pr.setText(evenement.getProgram());
+				price.setText(Float.toString(evenement.getPrice()));
+				pn.setText(evenement.getNbr_participants().toString());
+			}
+		});
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(20)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 462, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(30)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 509, GroupLayout.PREFERRED_SIZE))
+		);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(10)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 376, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblName)
+					.addGap(272)
+					.addComponent(nm, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblPlace)
+					.addGap(272)
+					.addComponent(pl, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblDate)
+					.addGap(276)
+					.addComponent(dt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblParticipantsNumber)
+					.addGap(184)
+					.addComponent(pn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblPrice)
+					.addGap(274)
+					.addComponent(price, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblProgram, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+					.addGap(82)
+					.addComponent(pr, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblPhoto, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(image))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(144)
+					.addComponent(btnPdf))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.addGap(126)
+					.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(11)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+					.addGap(34)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblName))
+						.addComponent(nm, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(6)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblPlace))
+						.addComponent(pl, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(6)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblDate))
+						.addComponent(dt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(6)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblParticipantsNumber))
+						.addComponent(pn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(6)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblPrice))
+						.addComponent(price, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(14)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblProgram)
+						.addComponent(pr, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
+					.addGap(9)
+					.addComponent(lblPhoto)
+					.addGap(11)
+					.addComponent(image)
+					.addGap(104)
+					.addComponent(btnPdf)
+					.addGap(18)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(5)
+							.addComponent(btnDelete))
+						.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
+		);
+		panel.setLayout(gl_panel);
+		setLayout(groupLayout);
+		initDataBindings();
+
+	}
+	protected void initDataBindings() {
+		JTableBinding<Evenement, List<Evenement>, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, evenements, table);
+		//
+		BeanProperty<Evenement, Integer> evenementBeanProperty = BeanProperty.create("ID_event");
+		jTableBinding.addColumnBinding(evenementBeanProperty).setColumnName("ID");
+		//
+		BeanProperty<Evenement, String> evenementBeanProperty_1 = BeanProperty.create("name_event");
+		jTableBinding.addColumnBinding(evenementBeanProperty_1).setColumnName("Event name");
+		//
+		BeanProperty<Evenement, String> evenementBeanProperty_2 = BeanProperty.create("place_event");
+		jTableBinding.addColumnBinding(evenementBeanProperty_2).setColumnName("Place event");
+		//
+		BeanProperty<Evenement, String> evenementBeanProperty_3 = BeanProperty.create("date_event");
+		jTableBinding.addColumnBinding(evenementBeanProperty_3).setColumnName("Date event");
+		//
+		BeanProperty<Evenement, String> evenementBeanProperty_4 = BeanProperty.create("price");
+		jTableBinding.addColumnBinding(evenementBeanProperty_4).setColumnName("Price");
+		//
+		BeanProperty<Evenement, String> evenementBeanProperty_5 = BeanProperty.create("nbr_participants");
+		jTableBinding.addColumnBinding(evenementBeanProperty_5).setColumnName("Participant's number");
+		//
+		jTableBinding.bind();
+	}
+}

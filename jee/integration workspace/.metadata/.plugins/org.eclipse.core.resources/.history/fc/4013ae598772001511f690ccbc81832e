@@ -1,0 +1,390 @@
+package ttma.client.GUI;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTabbedPane;
+
+import ttma.Entities.Staff;
+import ttma.client.delegate.ManageRHDeleguate;
+
+import javax.swing.JTable;
+
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.ObjectProperty;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Date;
+
+
+import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
+
+import java.awt.Component;
+
+import javax.swing.Box;
+
+import java.awt.Dimension;
+
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+
+import java.awt.Color;
+
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.EtchedBorder;
+
+import java.awt.SystemColor;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.awt.Label;
+import java.awt.Button;
+import javax.swing.SwingConstants;
+import java.awt.Panel;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+
+public class Gestionstaff extends JFrame {
+
+	private JPanel contentPane;
+	List <Staff> staff;
+	Staff staf;
+	private JTable table;
+	private JTextField nm;
+	private JTextField ad;
+	private JTextField ds;
+	private JTextField search;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Gestionstaff frame = new Gestionstaff();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Gestionstaff() {
+		staff=new ArrayList<Staff>();
+		staff=ManageRHDeleguate.tofindAll();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 871, 512);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
+		contentPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setContentPane(contentPane);
+		JButton btnDossier1 = new JButton("Dossier");
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[]{153, 34, 2, 77, 33, 85, 24, 172, 46, 100, 100, 66, 0};
+		gbl_contentPane.rowHeights = new int[]{36, 156, 14, 225, 35, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		contentPane.setLayout(gbl_contentPane);
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setBackground(Color.LIGHT_GRAY);
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.fill = GridBagConstraints.BOTH;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridwidth = 8;
+		gbc_lblNewLabel_1.gridx = 0;
+		gbc_lblNewLabel_1.gridy = 1;
+		contentPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		JLabel lblSearch = new JLabel("Search");
+		GridBagConstraints gbc_lblSearch = new GridBagConstraints();
+		gbc_lblSearch.anchor = GridBagConstraints.SOUTH;
+		gbc_lblSearch.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSearch.gridx = 8;
+		gbc_lblSearch.gridy = 1;
+		contentPane.add(lblSearch, gbc_lblSearch);
+		
+		search = new JTextField();
+		search.setColumns(10);
+		GridBagConstraints gbc_search = new GridBagConstraints();
+		gbc_search.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_search.insets = new Insets(0, 0, 5, 5);
+		gbc_search.gridheight = 2;
+		gbc_search.gridx = 10;
+		gbc_search.gridy = 1;
+		contentPane.add(search, gbc_search);
+		
+		JLabel lblNewLabel = new JLabel("Search :");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
+		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel.gridx = 11;
+		gbc_lblNewLabel.gridy = 2;
+		contentPane.add(lblNewLabel, gbc_lblNewLabel);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel.setLayout(null);
+		
+		JLabel label = new JLabel("Login :");
+		label.setBounds(6, 16, 82, 41);
+		panel.add(label);
+		
+		JLabel lblAdresse = new JLabel("Email :");
+		lblAdresse.setBounds(6, 81, 82, 41);
+		panel.add(lblAdresse);
+		
+		JLabel lblDescription = new JLabel("Name :");
+		lblDescription.setBounds(6, 145, 82, 41);
+		panel.add(lblDescription);
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_panel.gridwidth = 3;
+		gbc_panel.gridx = 0;
+		gbc_panel.gridy = 3;
+		contentPane.add(panel, gbc_panel);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.LIGHT_GRAY);
+		panel_2.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_2.setLayout(null);
+		JTextArea ds_1 = new JTextArea();
+		ds_1.setBounds(20, 151, 194, 33);
+		panel_2.add(ds_1);
+		
+		ad = new JTextField();
+		ad.setBounds(20, 92, 194, 33);
+		panel_2.add(ad);
+		ad.setColumns(10);
+		
+		nm = new JTextField();
+		nm.setBounds(20, 31, 194, 33);
+		panel_2.add(nm);
+		nm.setColumns(10);
+		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.fill = GridBagConstraints.BOTH;
+		gbc_panel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_2.gridwidth = 4;
+		gbc_panel_2.gridx = 3;
+		gbc_panel_2.gridy = 3;
+		contentPane.add(panel_2, gbc_panel_2);
+		table = new JTable();
+		table.setBackground(UIManager.getColor("Tree.textBackground"));
+		table.setCellSelectionEnabled(true);
+		GridBagConstraints gbc_table = new GridBagConstraints();
+		gbc_table.fill = GridBagConstraints.BOTH;
+		gbc_table.insets = new Insets(0, 0, 5, 5);
+		gbc_table.gridwidth = 4;
+		gbc_table.gridx = 7;
+		gbc_table.gridy = 3;
+		contentPane.add(table, gbc_table);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				staf=staff.get(table.getSelectedRow());
+				nm.setText(staf.getLogin());
+				ad.setText(staf.getEmail());
+				ds_1.setText(staf.getName());
+			}
+		});
+		
+			
+	
+		
+		JButton btnNewButton_1 = new JButton("Modify");
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.anchor = GridBagConstraints.EAST;
+		gbc_btnNewButton_1.fill = GridBagConstraints.VERTICAL;
+		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton_1.gridx = 0;
+		gbc_btnNewButton_1.gridy = 4;
+		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				  staf.setLogin(nm.getText());
+	              staf.setEmail(ad.getText());
+				staf.setName(ds_1.getText());
+				if(ManageRHDeleguate.toupdateStaff(staf))
+				
+				{
+					JOptionPane.showMessageDialog(null, "update reussie...");
+					nm.setText("");
+					ds_1.setText("");
+					ad.setText("");
+					staff=ManageRHDeleguate.tofindAll();
+					initDataBindings();
+				}
+				else{}
+			}
+		});
+		
+		JButton btnNewButton_2 = new JButton("Delete");
+		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
+		gbc_btnNewButton_2.fill = GridBagConstraints.BOTH;
+		gbc_btnNewButton_2.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton_2.gridwidth = 2;
+		gbc_btnNewButton_2.gridx = 2;
+		gbc_btnNewButton_2.gridy = 4;
+		contentPane.add(btnNewButton_2, gbc_btnNewButton_2);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				staf=staff.get(table.getSelectedRow());
+				if(ManageRHDeleguate.todeleteStaff(staf)){
+					JOptionPane.showMessageDialog(null, "delete reussie...");
+					nm.setText("");
+					ds_1.setText("");
+					ad.setText("");
+					staff=ManageRHDeleguate.tofindAll();
+					initDataBindings();
+				}
+				else{}
+			}
+		});
+		
+			JButton btnDossier = new JButton("Export");
+			btnDossier.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					String browse= search.getText();
+			        Document doc = new Document();
+			         try {
+			                PdfWriter writer=PdfWriter.getInstance(doc,new FileOutputStream(browse+".pdf"));
+			            } catch (FileNotFoundException ex) {
+			              // Logger.getLogger(ListStopover.class.getName()).log(Level.SEVERE, null, ex);
+			            } catch (DocumentException ex) {
+			          //  Logger.getLogger(ListStopover.class.getName()).log(Level.SEVERE, null, ex);
+			        }
+			        
+
+			        String i=(String) table.getValueAt(table.getSelectedRow(),0).toString();
+			        
+			        try{
+			            doc.open();
+			            doc.add(new Paragraph("	TTMA :\t"+ table.getValueAt(table.getSelectedRow(),0).toString()));
+			            doc.add(new Paragraph("	TTMA :\t"+ table.getValueAt(table.getSelectedRow(),1).toString()));
+			            doc.add(new Paragraph("	TTMA :\t"+ table.getValueAt(table.getSelectedRow(),2).toString()));
+			            doc.add(new Paragraph("	TTMA :\t"+ table.getValueAt(table.getSelectedRow(),3).toString()));
+			            
+			            doc.close();
+			            JOptionPane.showMessageDialog(null, "bien exporté");
+			        }
+			        
+			        catch(Exception e1){
+			            
+			            JOptionPane.showMessageDialog(null, e1);
+			            
+			        }
+					
+					
+					
+				}
+			});
+			
+			//JTextArea ds = new JTextArea();
+			
+			JButton btnNewButton = new JButton("Add");
+			GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+			gbc_btnNewButton.fill = GridBagConstraints.BOTH;
+			gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+			gbc_btnNewButton.gridx = 5;
+			gbc_btnNewButton.gridy = 4;
+			contentPane.add(btnNewButton, gbc_btnNewButton);
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Staff staf=new Staff();
+               staf.setLogin(nm.getText());
+              staf.setEmail(ad.getText());
+				staf.setName(ds_1.getText());
+               if(ManageRHDeleguate.toaddStaff(staf)){
+	    		   System.out.println("Ok!");
+			}else 
+				 System.out.println("Erreur");
+						initDataBindings();
+					}
+			
+	});
+			GridBagConstraints gbc_btnDossier = new GridBagConstraints();
+			gbc_btnDossier.anchor = GridBagConstraints.WEST;
+			gbc_btnDossier.fill = GridBagConstraints.VERTICAL;
+			gbc_btnDossier.insets = new Insets(0, 0, 0, 5);
+			gbc_btnDossier.gridwidth = 2;
+			gbc_btnDossier.gridx = 6;
+			gbc_btnDossier.gridy = 4;
+			contentPane.add(btnDossier, gbc_btnDossier);
+		initDataBindings();
+	}
+	protected void initDataBindings() {
+		JTableBinding<Staff, List<Staff>, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, staff, table);
+		//
+		BeanProperty<Staff, String> staffBeanProperty = BeanProperty.create("login");
+		jTableBinding.addColumnBinding(staffBeanProperty).setColumnName("Id");
+		//
+		BeanProperty<Staff, String> staffBeanProperty_1 = BeanProperty.create("login");
+		jTableBinding.addColumnBinding(staffBeanProperty_1).setColumnName("Login");
+		//
+		BeanProperty<Staff, String> staffBeanProperty_2 = BeanProperty.create("mdp");
+		jTableBinding.addColumnBinding(staffBeanProperty_2).setColumnName("password");
+		//
+		BeanProperty<Staff, String> staffBeanProperty_3 = BeanProperty.create("name");
+		jTableBinding.addColumnBinding(staffBeanProperty_3).setColumnName("Name");
+		//
+		BeanProperty<Staff, byte[]> staffBeanProperty_4 = BeanProperty.create("photo");
+		jTableBinding.addColumnBinding(staffBeanProperty_4).setColumnName("Photo");
+		//
+		BeanProperty<Staff, Float> staffBeanProperty_5 = BeanProperty.create("salaire");
+		jTableBinding.addColumnBinding(staffBeanProperty_5).setColumnName("Salaire");
+		//
+		BeanProperty<Staff, Date> staffBeanProperty_6 = BeanProperty.create("dns");
+		jTableBinding.addColumnBinding(staffBeanProperty_6).setColumnName("Date de naissance");
+		//
+		BeanProperty<Staff, String> staffBeanProperty_7 = BeanProperty.create("surname");
+		jTableBinding.addColumnBinding(staffBeanProperty_7).setColumnName("Surname");
+		//
+		BeanProperty<Staff, String> staffBeanProperty_8 = BeanProperty.create("email");
+		jTableBinding.addColumnBinding(staffBeanProperty_8).setColumnName("Email");
+		//
+		BeanProperty<Staff, String> staffBeanProperty_9 = BeanProperty.create("function");
+		jTableBinding.addColumnBinding(staffBeanProperty_9).setColumnName("Function");
+		//
+		jTableBinding.bind();
+	}
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="ttma.client.GUI.IFinanceManagement"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="java.lang.Number"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.IManageConge"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.ManagePublicityy"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.ManageTransportCompagny"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.IMedicalResponsible"/>
+<fullyQualifiedTypeName name="java.lang.IllegalAccessError"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.AgencyResponsible"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.ILogisticResponsible"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.EspaceResponsableEvent"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.TTMAAuthentification"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.EnvoiMail"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.IManageTimetable"/>
+<fullyQualifiedTypeName name="ttma.client.GUI.EspaceRespRelations"/>
+<fullyQualifiedTypeName name="javax.persistence.Entity"/>
+<fullyQualifiedTypeName name="javax.ejb.Singleton"/>
+<fullyQualifiedTypeName name="javax.jws.WebService"/>
+<fullyQualifiedTypeName name="java.lang.Deprecated"/>
+<fullyQualifiedTypeName name="javax.ws.rs.ext.ParamConverter.Lazy"/>
+</qualifiedTypeNameHistroy>

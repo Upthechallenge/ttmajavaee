@@ -1,0 +1,90 @@
+package ttma.client.GUI;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JScrollPane;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Color;
+
+public class LogisticRespSpace extends JFrame {
+
+	private JPanel contentPane;
+	//ManageTransCompagny manageTrasCompany;
+	JScrollPane scrollPane;
+	ManagePublicity managePublicity;
+	
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					LogisticRespSpace frame = new LogisticRespSpace();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public LogisticRespSpace() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 477, 343);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnOperations = new JMenu("Operations");
+		menuBar.add(mnOperations);
+		
+		JMenuItem mntmManageTransportCompany = new JMenuItem("Manage transport company");
+		mntmManageTransportCompany.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			ManageTransportCompagny b =new 	ManageTransportCompagny();
+				//scrollPane.setViewportView(manageTrasCompany);
+			b.setVisible(true);
+				
+				
+			}
+		});
+		
+		
+		
+		JMenuItem mntmManagePublicity_1 = new JMenuItem("Manage publicity");
+		mntmManagePublicity_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				managePublicity=new ManagePublicity();
+				scrollPane.setViewportView(managePublicity);
+			}
+		});
+		mnOperations.add(mntmManagePublicity_1);
+		////
+		mnOperations.add(mntmManageTransportCompany);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		 contentPane.setLayout(null);
+		
+		 scrollPane = new JScrollPane();
+		 scrollPane.setBounds(5, 5, 451, 273);
+		contentPane.add(scrollPane);
+	}
+}

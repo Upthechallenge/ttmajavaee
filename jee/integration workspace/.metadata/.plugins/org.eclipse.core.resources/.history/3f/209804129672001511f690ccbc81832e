@@ -1,0 +1,220 @@
+package ttma.client.GUI;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JRadioButton;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.border.LineBorder;
+
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
+import ttma.Entities.*;
+import ttma.client.delegate.*;
+
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AdministrationSpace extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textFieldDeb;
+	private JTextField deb;
+	private JTextField textFieldFin;
+	private JTextField fin;
+	private JTextField textFieldCin;
+	private JTable table;
+	List<Conge> conges;
+	Conge conge;
+	private JTable table_1;
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AdministrationSpace frame = new AdministrationSpace();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public AdministrationSpace() {
+		conges=new ArrayList<Conge>();
+		conges=GestionCongeDelegate.dofindAllConges();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 572, 436);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		
+		JPanel dateDeb = new JPanel();
+		contentPane.add(dateDeb, BorderLayout.CENTER);
+		dateDeb.setLayout(null);
+		
+		deb = new JTextField();
+		deb.setBounds(135, 80, 106, 20);
+		dateDeb.add(deb);
+		deb.setColumns(10);
+		
+		fin = new JTextField();
+		fin.setBounds(135, 122, 106, 20);
+		dateDeb.add(fin);
+		fin.setColumns(10);
+		
+		JComboBox comboBoxDeci = new JComboBox();
+		comboBoxDeci.setModel(new DefaultComboBoxModel(new String[] {"", "Accept", "Refuse"}));
+		comboBoxDeci.setBounds(135, 174, 106, 20);
+		dateDeb.add(comboBoxDeci);
+		
+		JButton btnNewButton = new JButton("Validate");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 conge.setCIN(textFieldCin.getText());;
+	             conge.setDateDeb(deb.getText());;
+				 conge.setDateFin(fin.getText());
+				 conge.setVerif(comboBoxDeci.getSelectedItem().toString());
+				if(GestionCongeDelegate.doupdateConge(conge))
+				
+				{
+					JOptionPane.showMessageDialog(null, "update with succes...");
+					textFieldCin.setText("");
+					deb.setText("");
+					fin.setText("");
+					
+					conges=GestionCongeDelegate.dofindAllConges();
+					initDataBindings();
+				}
+				else{}
+			}
+
+			private void initDataBindings() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			
+			}
+		);
+		btnNewButton.setBounds(69, 322, 89, 23);
+		dateDeb.add(btnNewButton);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(222, 322, 89, 23);
+		dateDeb.add(btnCancel);
+		
+		JLabel lblNewLabel = new JLabel("Leave start date :");
+		lblNewLabel.setBounds(23, 77, 106, 20);
+		dateDeb.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Leave end date :");
+		lblNewLabel_1.setBounds(23, 122, 106, 14);
+		dateDeb.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Decision : ");
+		lblNewLabel_2.setBounds(23, 164, 107, 20);
+		dateDeb.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_4 = new JLabel("Cin :");
+		lblNewLabel_4.setBounds(23, 43, 82, 14);
+		dateDeb.add(lblNewLabel_4);
+		
+		textFieldCin = new JTextField();
+		textFieldCin.setBounds(135, 43, 108, 20);
+		dateDeb.add(textFieldCin);
+		textFieldCin.setColumns(10);
+		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				conge=conges.get(table.getSelectedRow());
+				textFieldDeb.setText(conge.getDateDeb().toString());
+				textFieldFin.setText(conge.getDateFin().toString());
+				
+				
+			
+				}
+		});
+		//table = new JTable();
+		//table.setBounds(311, 43, 211, 203);
+		//dateDeb.add(table);
+		
+
+		
+		textFieldDeb = new JTextField();
+		textFieldDeb.setColumns(10);
+		
+		textFieldFin = new JTextField();
+		textFieldFin .setColumns(10);
+		
+		JLabel lblDescription = new JLabel("Name :");
+		
+		JButton btnNewButton_1 = new JButton("Refresh table");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				initDataBindings();
+			}
+		});
+		btnNewButton_1.setBounds(359, 246, 124, 23);
+		dateDeb.add(btnNewButton_1);
+		
+		table_1 = new JTable();
+		table_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				conge=conges.get(table_1.getSelectedRow());
+				textFieldCin.setText(conge.getCIN());
+				deb.setText(conge.getDateDeb());
+				fin.setText(conge.getDateFin());
+				
+			}
+		});
+		table_1.setBounds(318, 43, 191, 173);
+		dateDeb.add(table_1);
+		initDataBindings();
+	}
+	protected void initDataBindings() {
+		JTableBinding<Conge, List<Conge>, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, conges, table_1);
+		//
+		BeanProperty<Conge, String> congeBeanProperty = BeanProperty.create("CIN");
+		jTableBinding.addColumnBinding(congeBeanProperty).setColumnName("CIN");
+		//
+		BeanProperty<Conge, String> congeBeanProperty_1 = BeanProperty.create("dateDeb");
+		jTableBinding.addColumnBinding(congeBeanProperty_1).setColumnName("Start Date");
+		//
+		BeanProperty<Conge, String> congeBeanProperty_2 = BeanProperty.create("dateFin");
+		jTableBinding.addColumnBinding(congeBeanProperty_2).setColumnName("End Date");
+		//
+		BeanProperty<Conge, String> congeBeanProperty_3 = BeanProperty.create("verif");
+		jTableBinding.addColumnBinding(congeBeanProperty_3).setColumnName("Decision");
+		//
+		jTableBinding.bind();
+	}
+}

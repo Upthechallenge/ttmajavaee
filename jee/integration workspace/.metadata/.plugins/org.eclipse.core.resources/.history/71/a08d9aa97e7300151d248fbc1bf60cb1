@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="pidev-project">
+		<jta-data-source>java:/ttma</jta-data-source>
+		<class>ttma.Entities.Conge</class>
+		<class>ttma.Entities.DemandeConsultationEnLigne</class>
+		<class>ttma.Entities.Doctor</class>
+		<class>ttma.Entities.DoctorDisponibilities</class>
+		<class>ttma.Entities.Evenement</class>
+		<class>ttma.Entities.FinanceManagement</class>
+		<class>ttma.Entities.MedicalCenters</class>
+		<class>ttma.Entities.OnlineConsultations</class>
+		<class>ttma.Entities.Operation</class>
+		<class>ttma.Entities.Publicity</class>
+		<class>ttma.Entities.Staff</class>
+		<class>ttma.Entities.Timetable</class>
+		<class>ttma.Entities.TransportCompagnie</class>
+		<properties>
+	
+		  <property name="hibernate.hbm2ddl.auto" value="update"/>
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+			
+		</properties>
+	</persistence-unit>
+</persistence>
